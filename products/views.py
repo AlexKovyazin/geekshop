@@ -1,6 +1,7 @@
 from django.shortcuts import render
-
-# Create your views here.
+import os
+import json
+from geekshop.settings import BASE_DIR
 
 
 def index(request):
@@ -12,44 +13,9 @@ def index(request):
 
 def products(request):
     context = {
-        'title': 'Catalog',
-        'products': [
-            {
-                'name': 'Худи черного цвета с монограммами adidas Originals',
-                'price': 6090,
-                'description': 'Мягкая ткань для свитшотов. Стиль и комфорт – это образ жизни.',
-                'img_src': 'vendor/img/products/Adidas-hoodie.png'
-            },
-            {
-                'name': 'Синяя куртка The North Face',
-                'price': 23725,
-                'description': 'Гладкая ткань. Водонепроницаемое покрытие. Легкий и теплый пуховый наполнитель.',
-                'img_src': 'vendor/img/products/Blue-jacket-The-North-Face.png'
-            },
-            {
-                'name': 'Коричневый спортивный oversized-топ ASOS DESIGN',
-                'price': 3390,
-                'description': 'Материал с плюшевой текстурой. Удобный и мягкий.',
-                'img_src': 'vendor/img/products/Brown-sports-oversized-top-ASOS-DESIGN.png'
-            },
-            {
-                'name': 'Черный рюкзак Nike Heritage',
-                'price': 2340,
-                'description': 'Плотная ткань. Легкий материал.',
-                'img_src': 'vendor/img/products/Black-Nike-Heritage-backpack.png'
-            },
-            {
-                'name': 'Черные туфли на платформе с 3 парами люверсов Dr Martens 1461 Bex',
-                'price': 13590,
-                'description': 'Гладкий кожаный верх. Натуральный материал.',
-                'img_src': 'vendor/img/products/Black-Dr-Martens-shoes.png'
-            },
-            {
-                'name': 'Темно-синие широкие строгие брюки ASOS DESIGN',
-                'price': 2890,
-                'description': 'Легкая эластичная ткань сирсакер Фактурная ткань.',
-                'img_src': 'vendor/img/products/Dark-blue-wide-leg-ASOs-DESIGN-trousers.png'
-            },
-        ]
+        'title': 'Catalog'
     }
+    with open(BASE_DIR / 'products/fixtures/goods.json', 'r', encoding='UTF-8') as goods:
+        context['products'] = json.load(goods)
+
     return render(request, 'products/products.html', context)
