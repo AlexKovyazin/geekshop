@@ -1,0 +1,18 @@
+[
+  {
+    "model": "products.productscategory",
+    "pk": 3,
+    "fields": {
+      "name": "Мужская одежда",
+      "description": ""
+    }
+  },
+  {
+    "model": "products.productscategory",
+    "pk": 4,
+    "fields": {
+      "name": "Женская одежда",
+      "description": ""
+    }
+  }
+]
