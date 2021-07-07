@@ -1,17 +1,17 @@
 [
   {
-    "model": "products.productscategory",
+    "model": "products.ProductsCategory",
     "pk": 3,
     "fields": {
-      "name": "Мужская одежда",
+      "name": "men clothes",
       "description": ""
     }
   },
   {
-    "model": "products.productscategory",
+    "model": "products.ProductsCategory",
     "pk": 4,
     "fields": {
-      "name": "Женская одежда",
+      "name": "women clothes",
       "description": ""
     }
   }
