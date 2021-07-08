@@ -48,7 +48,13 @@ def logout(request):
 
 
 def profile(request):
-    form = UserProfileForm(instance=request.user)
+    if request.method == 'POST':
+        form = UserProfileForm(instance=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Данные успешно обновлены')
+    else:
+        form = UserProfileForm(instance=request.user)
     context = {
         'title': 'Geekshop - Личный кабинет',
         'form': form,
