@@ -11,7 +11,7 @@ class Basket(models.Model):
     created_timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Корзина пользователя {self.user.username} | Продукт {self.products.name}'
+        return f'Корзина пользователя {self.user.username} | Продукт {self.products.name} | Кол-во {self.quantity}'
 
 
 # Create your models here.
