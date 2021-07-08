@@ -5,12 +5,22 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-5">
-                    {% if form.errors %}
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert"
+                    {% if form.errors or messages %}
+                        <div class="alert
+                        {% if form.errors %} alert-warning {% else %} alert-success {% endif %}
+                        alert-dismissible fade show" role="alert"
                          style="margin-top: 50px;">
-                        {% for error in form.non_field_errors %}
-                            {{ error }}
-                        {% endfor %}
+
+                        {% if form.errors %}
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        {% else %}
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        {% endif %}
+
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
