@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from users.models import User
+
 
 def index(request):
     return render(request, 'userAdmin/index.html')
@@ -10,7 +12,11 @@ def create_user(request):
 
 
 def read_users(request):
-    return render(request, 'userAdmin/userAdmin-read.html')
+    users = User.objects.all()
+    context = {
+        'users': users
+    }
+    return render(request, 'userAdmin/userAdmin-read.html', context)
 
 
 def update_user(request):
