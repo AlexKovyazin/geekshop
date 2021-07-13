@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
+from django.urls import reverse
 
 from users.models import User
+from users.forms import UserRegistrationForm
 
 
 def index(request):
@@ -8,7 +10,18 @@ def index(request):
 
 
 def create_user(request):
-    return render(request, 'userAdmin/userAdmin-create.html')
+    if request.method == 'POST':
+        form = UserRegistrationForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('userAdmin:read_users'))
+        else:
+            print(form.errors)
+
+    else:
+        form = UserRegistrationForm()
+    context = {'form': form}
+    return render(request, 'userAdmin/userAdmin-create.html', context)
 
 
 def read_users(request):
