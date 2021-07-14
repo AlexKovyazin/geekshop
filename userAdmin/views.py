@@ -47,5 +47,8 @@ def update_user(request, user_id):
     return render(request, 'userAdmin/userAdmin-update-delete.html', context)
 
 
-def delete_user(request):
-    pass
+def delete_user(request, user_id):
+    selected_user = User.objects.get(id=user_id)
+    selected_user.is_active = False
+    selected_user.save()
+    return HttpResponseRedirect(reverse('userAdmin:read_users'))
