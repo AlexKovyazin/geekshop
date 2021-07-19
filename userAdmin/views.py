@@ -17,6 +17,11 @@ class UserListView(ListView):
     model = User
     template_name = 'userAdmin/userAdmin-read.html'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Пользователи'
+        return context
+
 
 class UserCreateView(CreateView):
     model = User
@@ -24,12 +29,22 @@ class UserCreateView(CreateView):
     template_name = 'userAdmin/userAdmin-create.html'
     success_url = reverse_lazy('userAdmin:read_users')
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Создание пользователя'
+        return context
+
 
 class UserUpdateView(UpdateView):
     model = User
     form_class = AdminUserUpdateForm
     template_name = 'userAdmin/userAdmin-update-delete.html'
     success_url = reverse_lazy('userAdmin:read_users')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Редактирование пользователя'
+        return context
 
 
 class UserDeleteView(DeleteView):
