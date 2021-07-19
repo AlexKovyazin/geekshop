@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.utils.decorators import method_decorator
 
 from users.models import User
 from userAdmin.forms import AdminUserRegistrationForm, AdminUserUpdateForm
@@ -22,6 +23,10 @@ class UserListView(ListView):
         context['title'] = 'Админ-панель - Пользователи'
         return context
 
+    @method_decorator(lambda u: u.is_staff)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 class UserCreateView(CreateView):
     model = User
@@ -33,6 +38,10 @@ class UserCreateView(CreateView):
         context = super().get_context_data(object_list=None, **kwargs)
         context['title'] = 'Админ-панель - Создание пользователя'
         return context
+
+    @method_decorator(lambda u: u.is_staff)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class UserUpdateView(UpdateView):
@@ -46,6 +55,10 @@ class UserUpdateView(UpdateView):
         context['title'] = 'Админ-панель - Редактирование пользователя'
         return context
 
+    @method_decorator(lambda u: u.is_staff)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
 class UserDeleteView(DeleteView):
     model = User
@@ -57,6 +70,10 @@ class UserDeleteView(DeleteView):
         self.object.is_active = False
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
+
+    @method_decorator(lambda u: u.is_staff)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 # @user_passes_test(lambda u: u.is_staff)
