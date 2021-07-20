@@ -14,7 +14,7 @@ def index(request):
     return render(request, 'userAdmin/index.html')
 
 
-class UserListView(ListView):
+class UserAdminListView(ListView):
     model = User
     template_name = 'userAdmin/userAdmin-read.html'
 
@@ -28,7 +28,7 @@ class UserListView(ListView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class UserCreateView(CreateView):
+class UserAdminCreateView(CreateView):
     model = User
     form_class = AdminUserRegistrationForm
     template_name = 'userAdmin/userAdmin-create.html'
@@ -44,7 +44,7 @@ class UserCreateView(CreateView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class UserUpdateView(UpdateView):
+class UserAdminUpdateView(UpdateView):
     model = User
     form_class = AdminUserUpdateForm
     template_name = 'userAdmin/userAdmin-update-delete.html'
@@ -60,7 +60,7 @@ class UserUpdateView(UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class UserDeleteView(DeleteView):
+class UserAdminDeleteView(DeleteView):
     model = User
     template_name = 'userAdmin/userAdmin-update-delete.html'
     success_url = reverse_lazy('userAdmin:read_users')
