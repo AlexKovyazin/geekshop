@@ -1,7 +1,6 @@
-from django.shortcuts import render
 from products.models import Products, ProductsCategory
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import TemplateView
+from django.views.generic.list import ListView
 
 
 class ProductsIndexView(TemplateView):
@@ -13,24 +12,22 @@ class ProductsIndexView(TemplateView):
         return context
 
 
-def products(request, category_id=None, page=1):
-    context = {
-        'title': 'GeekShop - Каталог',
-        'ProductsCategory': ProductsCategory.objects.all(),
-    }
-    if category_id:
-        items = Products.objects.filter(category_id=category_id)
-    else:
-        items = Products.objects.all()
+class ProductsListView(ListView):
+    model = Products
+    context_object_name = 'products'
+    paginate_by = 3
+    template_name = 'products/products.html'
 
-    paginator = Paginator(items, 3)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'GeekShop - Каталог'
+        context['ProductsCategory'] = ProductsCategory.objects.all()
+        return context
 
-    try:
-        products_paginator = paginator.page(page)
-    except PageNotAnInteger:
-        products_paginator = paginator.page(1)
-    except EmptyPage:
-        products_paginator = paginator.page(paginator.num_pages)
-    context['products'] = products_paginator
-
-    return render(request, 'products/products.html', context)
+    def get_queryset(self):
+        print(self.kwargs)
+        if 'category_id' not in self.kwargs:
+            return Products.objects.all()
+        else:
+            print(self.kwargs)
+            return Products.objects.filter(category_id=self.kwargs['category_id'])
