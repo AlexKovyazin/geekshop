@@ -18,10 +18,10 @@ from django.urls import path, include
 from geekshop import settings
 from django.conf.urls.static import static
 
-from products.views import index
+from products.views import ProductsIndexView
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', ProductsIndexView.as_view(), name='index'),
     path('admin/', admin.site.urls),
     path('products/', include('products.urls', namespace='products')),
     path('users/', include('users.urls', namespace='users')),

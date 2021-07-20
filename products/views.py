@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from products.models import Products, ProductsCategory
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.generic import TemplateView
 
 
-def index(request):
-    context = {
-        'title': 'Geekshop'
-    }
-    return render(request, 'products/index.html', context)
+class ProductsIndexView(TemplateView):
+    template_name = 'products/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        context['title'] = 'GeekShop'
+        return context
 
 
 def products(request, category_id=None, page=1):
