@@ -138,3 +138,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
+
+DOMAIN_NAME = 'http://localhost:8000'
+
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = '259604b56b23cb'
+EMAIL_HOST_PASSWORD = 'f917f183c232e6'
+EMAIL_PORT = '2525'
+EMAIL_USE_SSL = False
+EMAIL_USE_TLS = False
