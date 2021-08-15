@@ -1,9 +1,11 @@
+from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib import messages
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView
 
@@ -63,3 +65,23 @@ def profile(request):
         'basket': Basket.objects.filter(user=request.user),
     }
     return render(request, 'users/profile.html', context)
+
+
+def verify(request, email, activation_key):
+    user = User.objects.get(email=email)
+    error_message = ''
+
+    try:
+        if user.activation_key == activation_key and user.is_activation_key_expired() is False:
+            user.is_active = True
+            user.save()
+            login(request, user)
+        elif user.activation_key != activation_key:
+            error_message = 'Ключ активации указан неверно'
+        elif user.is_activation_key_expired():
+            error_message = 'Время действия ключа активации истекло'
+
+        return render(request, 'users/verification.html', context={'error_message': error_message})
+    except Exception as err:
+        print(f'Error activation user: {err.args}')
+        return HttpResponseRedirect(reverse('index'))

@@ -1,0 +1,19 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+
+  {% if user %}
+    <h3>Поздравляем!</h3>
+    <br>
+    <h4>Пользователь {{user.username}} подтвержден.</h4>
+  {% else %}
+    <h3>Верификация не пройдена.</h3>
+      {{ error_message }}
+  {% endif %}
+  <br>
+  <button class="btn btn-round form-control">
+    <a href="{% url 'products:index' %}" class="">на главную</a>
+  </button>
+
+{% endblock %}

@@ -1,6 +1,9 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 from django import forms
+from django.core.mail import send_mail
+from django.urls import reverse
 
+from geekshop import settings
 from users.models import User
 
 
@@ -50,6 +53,22 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+
+        print('До отправки сообщения')
+        # making and sending confirm message to new user
+        verify_link = reverse('users:verify', args=[user.email, user.activation_key])
+        title = f'Подтверждение учётной записи GeekShop'
+        message = f'Для подтверждения учётной записи {user.username} на сайте {settings.DOMAIN_NAME}, ' \
+                  f'перейдите по следующей ссылке:\n<a href="{verify_link}">Активировать</a>'
+        send_mail(title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+        print("После отправки сообщения")
+        return user
 
 
 class UserProfileForm(UserChangeForm):
