@@ -75,7 +75,7 @@ def verify(request, email, activation_key):
         if user.activation_key == activation_key and user.is_activation_key_expired() is False:
             user.is_active = True
             user.save()
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         elif user.activation_key != activation_key:
             error_message = 'Ключ активации указан неверно'
         elif user.is_activation_key_expired():

@@ -11,6 +11,7 @@ class User(AbstractUser):
     def is_activation_key_expired(self):
         return True if now() > self.activation_key_expires else False
 
+    # Из-за False авторизация через соц. сети невозможна
     is_active = models.BooleanField(default=False)
 
     image = models.ImageField(upload_to='users_images', blank=True)
