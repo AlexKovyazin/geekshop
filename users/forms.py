@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from django.urls import reverse
 
 from geekshop import settings
-from users.models import User
+from users.models import User, UserProfile
 
 
 class UserLoginForm(AuthenticationForm):
@@ -20,7 +20,8 @@ class UserLoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = (
-            'username', 'password'
+            'username',
+            'password'
         )
 
 
@@ -98,3 +99,32 @@ class UserProfileForm(UserChangeForm):
             'username',
             'email',
         )
+
+
+class UserProfileFormExtended(forms.ModelForm):
+
+    # tagline = forms.CharField(widget=forms.TextInput(attrs={
+    #     'class': 'form-control py-4',
+    # }), required=False)
+    #
+    # about_me = forms.CharField(widget=forms.TextInput(attrs={
+    #     'class': 'form-control py-4',
+    # }), required=False)
+    #
+    # gender = forms.ChoiceField(widget=forms.TextInput(attrs={
+    #     'class': 'form-control py-4',
+    # }), required=False)
+
+    class Meta:
+        model = UserProfile
+        fields = (
+            'tagline',
+            'about_me',
+            'gender',
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileFormExtended, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control py-4'
+            field.widget.attrs['required'] = False

@@ -9,7 +9,7 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView
 
-from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
+from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm, UserProfileFormExtended
 from basket.models import Basket
 from users.models import User
 
@@ -54,14 +54,25 @@ class UserLogoutView(LoginRequiredMixin, LogoutView):
 def profile(request):
     if request.method == 'POST':
         form = UserProfileForm(instance=request.user, files=request.FILES, data=request.POST)
+        form_extended = UserProfileFormExtended(instance=request.user.userprofile)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Данные успешно обновлены')
+            messages.success(request, 'Данные form успешно обновлены')
+            print('form saved')
+
+        # Форма не проходит валидацию!
+        if form_extended.is_valid():
+            form_extended.save()
+            messages.success(request, 'Данные form_extended успешно обновлены')
+            print('form_extended saved')
     else:
+        print('form is not valid')
         form = UserProfileForm(instance=request.user)
+        form_extended = UserProfileFormExtended(instance=request.user.userprofile)
     context = {
         'title': 'GeekShop - Личный кабинет',
         'form': form,
+        'form_extended': form_extended,
         'basket': Basket.objects.filter(user=request.user),
     }
     return render(request, 'users/profile.html', context)
