@@ -38,8 +38,8 @@
                                     <td><a href="{#% url 'orders:update_order' order.id %#}"
                                            style="color: dodgerblue">{{ order.id }}</a></td>
                                     <td>{{ order.user }}</td>
-                                    <td>{{ order.created }}</td>
-                                    <td>{{ order.updated }}</td>
+                                    <td>{{ order.created|date:"Y-m-d H:i:s" }}</td>
+                                    <td>{{ order.updated|date:"Y-m-d H:i:s" }}</td>
                                     <td>{{ order.get_status_display }}</td>
 
                                     {% if order.is_active %}
