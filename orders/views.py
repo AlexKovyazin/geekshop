@@ -30,6 +30,7 @@ class OrderItemsCreate(CreateView):
     model = Order
     fields = []
     success_url = reverse_lazy('orders:OrdersList')
+    template_name = 'orders/order-form.html'
 
     def get_context_data(self, **kwargs):
         data = super(OrderItemsCreate, self).get_context_data(**kwargs)
@@ -43,7 +44,7 @@ class OrderItemsCreate(CreateView):
                 order_formset = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=len(basket_items))
                 formset = order_formset()
                 for i, form in enumerate(formset.forms):
-                    form.initial['product'] = basket_items[i].product
+                    form.initial['products'] = basket_items[i].products
                     form.initial['quantity'] = basket_items[i].quantity
                 basket_items.delete()
             else:
@@ -73,7 +74,7 @@ class OrderItemsCreate(CreateView):
 class OrderUpdate(LoginRequiredMixin, UpdateView):
     model = Order
     fields = []
-    success_url = reverse_lazy('order:orders_list')
+    success_url = reverse_lazy('orders:OrdersList')
 
     def get_context_data(self, **kwargs):
         data = super(OrderUpdate, self).get_context_data(**kwargs)
@@ -107,12 +108,13 @@ class OrderUpdate(LoginRequiredMixin, UpdateView):
 
 class OrderDelete(LoginRequiredMixin, DeleteView):
     model = Order
-    success_url = reverse_lazy('order:orders_list')
+    success_url = reverse_lazy('orders:OrdersList')
+    template_name = 'orders/order-confirm-delete.html'
 
 
 class OrderRead(LoginRequiredMixin, DetailView):
     model = Order
-    template_name = 'orders/order_detail.html'
+    template_name = 'orders/order-details.html'
 
     def get_context_data(self, **kwargs):
         context = super(OrderRead, self).get_context_data(**kwargs)
@@ -125,4 +127,4 @@ def order_forming_complete(request, pk):
     order.status = Order.SENT_TO_PROCEED
     order.save()
 
-    return HttpResponseRedirect(reverse('order:orders_list'))
+    return HttpResponseRedirect(reverse('orders:OrdersList'))
