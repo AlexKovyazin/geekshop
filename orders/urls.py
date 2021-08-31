@@ -2,7 +2,7 @@ from django.urls import path
 from geekshop import settings
 from django.conf.urls.static import static
 
-from orders.views import OrdersList, AdminOrdersList, OrderItemsCreate, OrderRead, OrderUpdate, OrderDelete, \
+from orders.views import OrdersList, OrderItemsCreate, OrderRead, OrderUpdate, OrderDelete, \
     order_forming_complete
 
 app_name = 'orders'
