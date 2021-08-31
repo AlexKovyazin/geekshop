@@ -61,14 +61,12 @@ class UserRegistrationForm(UserCreationForm):
         if commit:
             user.save()
 
-        print('До отправки сообщения')
         # making and sending confirm message to new user
         verify_link = reverse('users:verify', args=[user.email, user.activation_key])
         title = f'Подтверждение учётной записи GeekShop'
         message = f'Для подтверждения учётной записи {user.username} на сайте {settings.DOMAIN_NAME}, ' \
                   f'перейдите по следующей ссылке:\n<a href="{verify_link}">Активировать</a>'
         send_mail(title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
-        print("После отправки сообщения")
         return user
 
 

@@ -58,15 +58,12 @@ def profile(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Данные form успешно обновлены')
-            print('form saved')
 
         # Форма не проходит валидацию!
         if form_extended.is_valid():
             form_extended.save()
             messages.success(request, 'Данные form_extended успешно обновлены')
-            print('form_extended saved')
     else:
-        print('form is not valid')
         form = UserProfileForm(instance=request.user)
         form_extended = UserProfileFormExtended(instance=request.user.userprofile)
     context = {
