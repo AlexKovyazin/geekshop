@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+import copy
 
 from basket.models import Basket
 from orders.forms import OrderItemForm
@@ -46,12 +47,11 @@ class OrderItemsCreate(CreateView):
                 for i, form in enumerate(formset.forms):
                     form.initial['product'] = basket_items[i].products
                     form.initial['quantity'] = basket_items[i].quantity
-                basket_items.delete()
+                # basket_items.delete()
             else:
                 formset = order_formset()
 
         data['order_items'] = formset
-        data['user_basket'] = Basket.objects.filter(user=self.request.user)
 
         return data
 
