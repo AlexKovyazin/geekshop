@@ -4,7 +4,7 @@
         Корзина <span class="badge badge-secondary badge-pill"> {{ basket.0.total_quantity }} </span>
     </h4>
     {% for item in basket %}
-        <p> {{ item }}</p>
+{#        <p> {{ item }}</p>#}
         <div class="card mb-3">
             <div class="card-body">
                 <h5 class="card-title">{{ item.products.name }}</h5>

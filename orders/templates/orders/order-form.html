@@ -8,8 +8,8 @@
            {% csrf_token %}
            {{ form.as_p }}
            <table class="table">
-               {{ orderitems.management_form }}
-               {% for form in orderitems.forms %}
+               {{ order_items.management_form }}
+               {% for form in order_items.forms %}
                    {% if forloop.first %}
                        <thead>
                        <tr>
@@ -36,7 +36,9 @@
                    </tr>
                {% endfor %}
            </table>
+
            <button type="submit" value="сохранить" class="btn btn-default btn-round form-control last">сохранить</button>
+
            {% include 'orders/includes/inc-order-actions.html' %}
        </form>
    </div>

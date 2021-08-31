@@ -18,4 +18,4 @@ class Products(models.Model):
     category = models.ForeignKey(ProductsCategory, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.name} | {self.category}'
+        return f'{self.name}'

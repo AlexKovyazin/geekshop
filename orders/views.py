@@ -44,13 +44,14 @@ class OrderItemsCreate(CreateView):
                 order_formset = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=len(basket_items))
                 formset = order_formset()
                 for i, form in enumerate(formset.forms):
-                    form.initial['products'] = basket_items[i].products
+                    form.initial['product'] = basket_items[i].products
                     form.initial['quantity'] = basket_items[i].quantity
                 basket_items.delete()
             else:
                 formset = order_formset()
 
         data['order_items'] = formset
+        data['user_basket'] = Basket.objects.filter(user=self.request.user)
 
         return data
 
