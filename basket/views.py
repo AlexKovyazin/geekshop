@@ -10,10 +10,10 @@ from basket.models import Basket
 @login_required
 def basket_add(request, product_id):
     product = Products.objects.get(id=product_id)
-    basket = Basket.objects.filter(user=request.user, products=product)
+    basket = Basket.objects.filter(user=request.user, product=product)
 
     if not basket.exists():
-        Basket.objects.create(user=request.user, products=product, quantity=1)
+        Basket.objects.create(user=request.user, product=product, quantity=1)
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         update_basket = basket.first()
