@@ -25,9 +25,7 @@ class ProductsListView(ListView):
         return context
 
     def get_queryset(self):
-        print(self.kwargs)
         if 'category_id' not in self.kwargs:
             return Products.objects.all()
         else:
-            print(self.kwargs)
             return Products.objects.filter(category_id=self.kwargs['category_id'])
