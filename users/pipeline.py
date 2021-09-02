@@ -28,4 +28,6 @@ def save_user_profile(backend, user, response, *args, **kwargs):
     if data['about']:
         user.shopuserprofile.about_me = data['about']
 
+    user.is_active = True
+
     user.save()

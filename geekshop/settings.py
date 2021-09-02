@@ -57,17 +57,17 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.vk.VKOAuth2'
 ]
 
-# SOCIAL_AUTH_PIPELINE = (
-#     'social_core.pipeline.social_auth.social_details',
-#     'social_core.pipeline.social_auth.social_uid',
-#     'social_core.pipeline.social_auth.auth_allowed',
-#     'social_core.pipeline.social_auth.social_user',
-#     'social_core.pipeline.user.create_user',
-#     'authapp.pipeline.save_user_profile',
-#     'social_core.pipeline.social_auth.associate_user',
-#     'social_core.pipeline.social_auth.load_extra_data',
-#     'social_core.pipeline.user.user_details',
-# )
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.create_user',
+    'users.pipeline.save_user_profile',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
