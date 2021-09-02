@@ -3,7 +3,7 @@ from geekshop import settings
 from django.conf.urls.static import static
 
 from orders.views import OrdersList, OrderItemsCreate, OrderRead, OrderUpdate, OrderDelete, \
-    order_forming_complete
+    order_forming_complete, get_product_price
 
 app_name = 'orders'
 
@@ -14,6 +14,7 @@ urlpatterns = [
     path('read/<int:pk>/', OrderRead.as_view(), name='OrderRead'),
     path('update/<int:pk>/', OrderUpdate.as_view(), name='OrderUpdate'),
     path('delete/<int:pk>/', OrderDelete.as_view(), name='OrderDelete'),
+    path('product/<int:pk>/price/', get_product_price, name='get_product_price'),
 ]
 
 if settings.DEBUG:

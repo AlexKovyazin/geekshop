@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.dispatch import receiver
 from django.forms import inlineformset_factory
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
@@ -12,6 +12,7 @@ from django.db.models.signals import pre_save, pre_delete
 from basket.models import Basket
 from orders.forms import OrderItemForm
 from orders.models import Order, OrderItem
+from products.models import Products
 
 
 class OrdersList(ListView):
@@ -44,13 +45,16 @@ class OrderItemsCreate(CreateView):
         else:
             basket_items = Basket.objects.filter(user=self.request.user)
             if len(basket_items):
-                order_formset = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=len(basket_items))
+                order_formset = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=len(basket_items) + 1)
                 formset = order_formset()
                 for i, form in enumerate(formset.forms):
-                    form.initial['product'] = basket_items[i].product
-                    form.initial['quantity'] = basket_items[i].quantity
-                    form.initial['price'] = basket_items[i].product.price
-                # basket_items.delete()
+                    if i == len(formset.forms) - 1:
+                        break
+                    else:
+                        form.initial['product'] = basket_items[i].product
+                        form.initial['quantity'] = basket_items[i].quantity
+                        form.initial['price'] = basket_items[i].product.price
+                basket_items.delete()
             else:
                 formset = order_formset()
 
@@ -153,3 +157,12 @@ def product_quantity_update_save(sender, update_fields, instance, **kwargs):
 def product_quantity_update_delete(sender, instance, **kwargs):
     instance.product.quantity += instance.quantity
     instance.product.save()
+
+
+def get_product_price(request, pk):
+    if request.is_ajax():
+        product = Products.objects.filter(pk=int(pk)).first()
+        if product:
+            return JsonResponse({'price': product.price})
+        else:
+            return JsonResponse({'price': 0})

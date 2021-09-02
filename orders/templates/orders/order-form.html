@@ -1,6 +1,11 @@
 {% extends "products/base.html" %}
 {% load static %}
 
+{% block js %}
+    <script src="{% static 'js/orders.js' %}"></script>
+    <script src="{% static 'js/jquery.formset.js' %}"></script>
+{% endblock %}
+
 {% block content %}
     {% include 'orders/includes/inc-order-summary.html' %}
     <div class="order_form">
@@ -36,7 +41,7 @@
                                     {% if field.value %}
                                         <span class="order_items-{{ forloop.parentloop.counter0 }}-price">
                                             {{ field.value }}
-                                        </span> руб
+                                        </span> руб.
                                     {% endif %}
                                 {% endif %}
 
@@ -53,10 +58,4 @@
             {% include 'orders/includes/inc-order-actions.html' %}
         </form>
     </div>
-
-    {% block js %}
-        <script src="{% static 'js/orders.js' %}"></script>
-        <script src="{% static 'js/jquery.formset.js' %}"></script>
-    {% endblock %}
-
 {% endblock %}
