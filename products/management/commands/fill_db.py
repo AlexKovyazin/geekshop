@@ -32,7 +32,3 @@ class Command(BaseCommand):
             product['category'] = _category
             new_product = Products(**product)
             new_product.save()
-
-        User.objects.create_superuser('AlexK',
-                                      email='kovyazin.alexander@gmail.com',
-                                      password='pbkdf2_sha256$260000$sa3ZLtkjOOFAvxK635BVBO$GicVRVaaZUBIurJpfm62HbwnZANCP6BzpKQjfxgnnHQ=')
