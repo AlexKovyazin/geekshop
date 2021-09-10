@@ -1,0 +1,27 @@
+[
+	{
+		"id" : 5,
+		"name" : "Худи и свитшоты",
+		"description" : ""
+	},
+	{
+		"id" : 6,
+		"name" : "Верхняя одежда",
+		"description" : ""
+	},
+	{
+		"id" : 7,
+		"name" : "Обувь",
+		"description" : ""
+	},
+	{
+		"id" : 8,
+		"name" : "Аксесуары",
+		"description" : ""
+	},
+	{
+		"id" : 9,
+		"name" : "Брюки",
+		"description" : ""
+	}
+]
