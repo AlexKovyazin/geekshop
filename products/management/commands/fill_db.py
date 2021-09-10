@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 import json
 import os
 
+from users.models import User
 from products.models import ProductsCategory, Products
 
 JSON_PATH = 'products/jsons'
@@ -27,3 +28,10 @@ class Command(BaseCommand):
         for product in products:
             new_product = Products(**product)
             new_product.save()
+
+        users = load_from_json('')
+
+        User.objects.all().delete()
+        for user in users:
+            new_user = User(**user)
+            new_user.save()
