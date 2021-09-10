@@ -29,7 +29,7 @@ class Command(BaseCommand):
             new_product = Products(**product)
             new_product.save()
 
-        users = load_from_json('')
+        users = load_from_json('users_user.json')
 
         User.objects.all().delete()
         for user in users:
