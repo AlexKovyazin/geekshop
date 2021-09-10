@@ -25,9 +25,5 @@ class Command(BaseCommand):
 
         Products.objects.all().delete()
         for product in products:
-            category_name = product['category']
-
-            _category = ProductsCategory.objects.get(name=category_name)
-            product['category'] = _category
             new_product = Products(**product)
             new_product.save()
