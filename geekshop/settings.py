@@ -205,6 +205,7 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = '/products'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_ERROR_URL = '/'
+LOGIN_URL = '/users/login'
 
 DOMAIN_NAME = 'http://localhost:8000'
 
