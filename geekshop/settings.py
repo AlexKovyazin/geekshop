@@ -30,6 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'social_django',
     'debug_toolbar',
     'template_profiler_panel',
+    'django_extensions',
 ]
 
 if DEBUG:
@@ -144,15 +146,25 @@ SOCIAL_AUTH_PIPELINE = (
 
 WSGI_APPLICATION = 'geekshop.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+    # database for local
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
+
+    # database for prod sever
+    # 'default': {
+    #     'NAME': 'geekshop',
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'USER': 'postgres',
+    # }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -172,6 +184,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -185,16 +198,22 @@ USE_L10N = True
 
 USE_TZ = True
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+# for local server
 STATICFILES_DIRS = (
     BASE_DIR / 'static',
 )
 
+# for prod server
+# STATICFILES_ROOT = BASE_DIR / 'static'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
