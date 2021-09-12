@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import environ
+import os
 
 env = environ.Env()
 environ.Env.read_env()
@@ -209,7 +210,7 @@ STATIC_URL = '/static/'
 # )
 
 # for prod server
-STATICFILES_ROOT = BASE_DIR / 'static'
+STATICFILES_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
