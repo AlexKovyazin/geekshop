@@ -15,7 +15,7 @@ from orders.models import Order, OrderItem
 from products.models import Products
 
 
-class OrdersList(ListView):
+class OrdersList(ListView, LoginRequiredMixin):
     model = Order
     extra_context = {'title': 'GeekShop - Заказы'}
     template_name = 'orders/user-order-list.html'
@@ -30,7 +30,7 @@ class AdminOrdersList(ListView):
     template_name = 'orders/admin-order-list.html'
 
 
-class OrderItemsCreate(CreateView):
+class OrderItemsCreate(CreateView, LoginRequiredMixin):
     model = Order
     fields = []
     success_url = reverse_lazy('orders:OrdersList')
