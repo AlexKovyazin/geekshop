@@ -70,7 +70,7 @@ def profile(request):
         'title': 'GeekShop - Личный кабинет',
         'form': form,
         'form_extended': form_extended,
-        'basket': Basket.objects.filter(user=request.user),
+        # 'basket': Basket.objects.filter(user=request.user),
     }
     return render(request, 'users/profile.html', context)
 
