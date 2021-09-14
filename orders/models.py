@@ -65,6 +65,10 @@ class Order(models.Model):
         self.is_active = False
         self.save()
 
+    def get_total_cost(self):
+        items = self.order_items.select_related()
+        return sum(list(map(lambda x: x.quantity * x.product.price, items)))
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(
