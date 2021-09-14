@@ -56,20 +56,8 @@ class Order(models.Model):
     def __str__(self):
         return 'Текущий заказ: {}'.format(self.id)
 
-    def get_total_quantity(self):
-        items = self.order_items.select_related()
-        return sum(list(map(lambda x: x.quantity, items)))
-
-    def get_product_type_quantity(self):
-        items = self.order_items.select_related()
-        return len(items)
-
-    def get_total_cost(self):
-        items = self.order_items.select_related()
-        return sum(list(map(lambda x: x.quantity * x.product.price, items)))
-
     def delete(self):
-        items = self.order_items.select_related()
+        items = self.order_items.select_related('product')
         for item in items:
             item.product.quantity += item.quantity
             item.product.save()
@@ -101,3 +89,6 @@ class OrderItem(models.Model):
     @staticmethod
     def get_item(pk):
         return OrderItem.objects.get(pk=pk).first
+
+    def __str__(self):
+        return self.product.name
