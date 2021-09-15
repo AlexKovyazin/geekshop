@@ -39,9 +39,17 @@ def basket_edit(request, basket_id, quantity):
         else:
             selected_basket.delete()
 
-        basket = Basket.objects.filter(user=request.user)
+        basket = Basket.objects.select_related('user').filter(user=request.user)
+        total_sum = 0
+        total_quantity = 0
+        for item in basket:
+            total_sum += item.sum()
+            total_quantity += item.quantity
+
         context = {
-            'basket': basket
+            'basket': basket,
+            'basket_total_sum': total_sum,
+            'basket_total_quantity': total_quantity,
         }
         result = render_to_string('basket/basket.html', context)
         return JsonResponse({'result': result})

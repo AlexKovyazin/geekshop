@@ -3,10 +3,9 @@ from django.db import transaction
 from django.dispatch import receiver
 from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-import copy
 from django.db.models.signals import pre_save, pre_delete
 
 from basket.models import Basket
@@ -21,13 +20,16 @@ class OrdersList(LoginRequiredMixin, ListView):
     template_name = 'orders/user-order-list.html'
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user)
+        return Order.objects.select_related('user').filter(user=self.request.user)
 
 
 class AdminOrdersList(LoginRequiredMixin, ListView):
     model = Order
     extra_context = {'title': 'Админ-панель - Заказы'}
     template_name = 'orders/admin-order-list.html'
+
+    def get_queryset(self):
+        return Order.objects.select_related('user')
 
 
 class OrderItemsCreate(LoginRequiredMixin, CreateView):
@@ -43,7 +45,7 @@ class OrderItemsCreate(LoginRequiredMixin, CreateView):
         if self.request.POST:
             formset = order_formset(self.request.POST)
         else:
-            basket_items = Basket.objects.filter(user=self.request.user)
+            basket_items = Basket.objects.select_related('user').filter(user=self.request.user)
             if len(basket_items):
                 order_formset = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=len(basket_items) + 1)
                 formset = order_formset()
@@ -91,7 +93,8 @@ class OrderUpdate(LoginRequiredMixin, UpdateView):
         if self.request.POST:
             data['order_items'] = order_formset(self.request.POST, instance=self.object)
         else:
-            formset = order_formset(instance=self.object)
+            queryset = self.object.orderitems.select_related()
+            formset = order_formset(instance=self.object, queryset=queryset)
             for form in formset.forms:
                 if form.instance.pk:
                     form.initial['price'] = form.instance.product.price
@@ -129,7 +132,19 @@ class OrderRead(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(OrderRead, self).get_context_data(**kwargs)
-        context['title'] = 'заказ/просмотр'
+
+        items = OrderItem.objects.select_related('order').filter(order=kwargs['object'].id)
+        total_quantity = sum(list(map(lambda x: x.quantity, items)))
+        total_cost = sum(list(map(lambda x: x.quantity * x.product.price, items)))
+        product_type_quantity = len(items)
+
+        context = {
+            **context,
+            'title': 'заказ/просмотр',
+            'order_total_quantity': total_quantity,
+            'order_total_cost': total_cost,
+            'order_product_type_quantity': product_type_quantity,
+        }
         return context
 
 
