@@ -18,7 +18,7 @@ class ProductsIndexView(TemplateView):
 class ProductsListView(ListView):
     model = Products
     context_object_name = 'products'
-    paginate_by = 3
+    paginate_by = 6
     template_name = 'products/products.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -28,22 +28,31 @@ class ProductsListView(ListView):
         return context
 
     def get_queryset(self):
-        if settings.LOW_CACHE:
-            key = 'products'
-            products = cache.get(key)
-            if products is None:
-                if 'category_id' not in self.kwargs:
-                    products = Products.objects.all()
-                else:
-                    products =  Products.objects.filter(category_id=self.kwargs['category_id'])
-                cache.set(key, products)
-            return products
+        if 'category_id' in self.kwargs:
+            chosen_category_id = self.kwargs['category_id']
         else:
-            if 'category_id' not in self.kwargs:
+            chosen_category_id = None
+        if settings.LOW_CACHE:
+            if chosen_category_id:
+                key = f'products_{chosen_category_id}'
+                products = cache.get(key)
+                if products is None:
+                    products = Products.objects.filter(category_id=chosen_category_id)
+                    cache.set(key, products)
+            else:
+                key = 'products'
+                products = cache.get(key)
+                if products is None:
+                    products = Products.objects.all()
+                    cache.set(key, products)
+
+        else:
+            if not chosen_category_id:
                 products = Products.objects.all()
             else:
-                products = Products.objects.filter(category_id=self.kwargs['category_id'])
-            return products
+                products = Products.objects.filter(category_id=chosen_category_id)
+
+        return products
 
     @staticmethod
     def get_categories():
