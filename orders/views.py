@@ -45,7 +45,7 @@ class OrderItemsCreate(LoginRequiredMixin, CreateView):
         if self.request.POST:
             formset = order_formset(self.request.POST)
         else:
-            basket_items = Basket.objects.select_related('user').filter(user=self.request.user)
+            basket_items = Basket.objects.filter(user=self.request.user).select_related()
             if len(basket_items):
                 order_formset = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=len(basket_items) + 1)
                 formset = order_formset()
