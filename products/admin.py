@@ -7,7 +7,6 @@ admin.site.register(ProductsCategory)
 
 @admin.register(Products)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'quantity', 'category')
-    fields = ('name', 'image', 'description', 'price', 'quantity', 'category')
+    list_display = ('id', 'name', 'price', 'quantity', 'category', 'is_active')
     ordering = ('name',)
-    search_fields = ('name',)
+    search_fields = ('id', 'name', 'price', 'quantity', 'category', 'is_active')

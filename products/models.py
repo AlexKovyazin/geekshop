@@ -9,6 +9,10 @@ class ProductsCategory(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'Категории'
+        verbose_name_plural = 'Категории'
+
 
 class Products(models.Model):
     name = models.CharField(max_length=256)
@@ -18,6 +22,11 @@ class Products(models.Model):
     quantity = models.PositiveIntegerField(default=0)
     category = models.ForeignKey(ProductsCategory, on_delete=models.CASCADE)
     is_active = models.BooleanField(blank=False, default=True)
+
+    class Meta:
+        verbose_name = 'Продукт'
+        verbose_name_plural = 'Продукты'
+
 
     def __str__(self):
         return f'{self.name}'
