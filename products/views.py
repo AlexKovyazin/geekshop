@@ -70,6 +70,7 @@ class ProductsListView(ListView):
             return ProductsCategory.objects.all()
 
 
+# Функция для отображения запроса к БД
 def db_profile_by_type(prefix, type, queries):
     update_queries = list(filter(lambda x: type in x['sql'], queries))
     print(f'db_profile {type} for {prefix}:')
@@ -84,4 +85,4 @@ def product_products_category_is_active_save(sender, instance, **kwargs):
         else:
             instance.products_set.update(is_active=False)
 
-        db_profile_by_type(sender, 'UPDATE', connection.queries)
+        # db_profile_by_type(sender, 'UPDATE', connection.queries)
