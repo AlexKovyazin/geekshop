@@ -4,6 +4,9 @@ from geekshop import settings
 from products.models import Products, ProductsCategory
 from django.views.generic import TemplateView
 from django.views.generic.list import ListView
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
+from django.db import connection
 
 
 class ProductsIndexView(TemplateView):
@@ -67,4 +70,18 @@ class ProductsListView(ListView):
             return ProductsCategory.objects.all()
 
 
+def db_profile_by_type(prefix, type, queries):
+    update_queries = list(filter(lambda x: type in x['sql'], queries))
+    print(f'db_profile {type} for {prefix}:')
+    [print(query['sql']) for query in update_queries]
 
+
+@receiver(pre_save, sender=ProductsCategory)
+def product_products_category_is_active_save(sender, instance, **kwargs):
+    if instance.pk:
+        if instance.is_active:
+            instance.products_set.update(is_active=True)
+        else:
+            instance.products_set.update(is_active=False)
+
+        db_profile_by_type(sender, 'UPDATE', connection.queries)
