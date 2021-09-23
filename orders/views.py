@@ -29,7 +29,7 @@ class AdminOrdersList(LoginRequiredMixin, ListView):
     template_name = 'orders/admin-order-list.html'
 
     def get_queryset(self):
-        return Order.objects.select_related('user')
+        return Order.objects.all()
 
 
 class OrderItemsCreate(LoginRequiredMixin, CreateView):
