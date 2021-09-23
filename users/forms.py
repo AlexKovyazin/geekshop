@@ -102,13 +102,13 @@ class UserProfileForm(UserChangeForm):
 class UserProfileFormExtended(forms.ModelForm):
 
     # tagline = forms.CharField(widget=forms.TextInput(attrs={
-    #     'class': 'form-control py-4',
+    #     'class': 'form-control',
     # }), required=False)
     #
     # about_me = forms.CharField(widget=forms.TextInput(attrs={
-    #     'class': 'form-control py-4',
+    #     'class': 'form-control',
     # }), required=False)
-    #
+
     # gender = forms.ChoiceField(widget=forms.TextInput(attrs={
     #     'class': 'form-control py-4',
     # }), required=False)
@@ -123,6 +123,12 @@ class UserProfileFormExtended(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UserProfileFormExtended, self).__init__(*args, **kwargs)
+
+        user = UserProfile.objects.get(id=kwargs['instance'].id)
+        self.initial['tagline'] = user.tagline
+        self.initial['about_me'] = user.about_me
+        self.initial['gender'] = user.gender
+
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control py-4'
+            field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['required'] = False
