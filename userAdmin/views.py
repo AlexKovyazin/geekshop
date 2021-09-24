@@ -80,7 +80,7 @@ class UserAdminDeleteView(DeleteView):
 
 
 # Отображение и редактирование товаров
-class AdminProductsListView(LoginRequiredMixin, ListView):
+class ProductsAdminListView(LoginRequiredMixin, ListView):
     model = Products
     extra_context = {'title': 'Админ-панель - Товары'}
     template_name = 'userAdmin/products-list.html'
@@ -89,7 +89,7 @@ class AdminProductsListView(LoginRequiredMixin, ListView):
         return Products.objects.all()
 
 
-class AdminProductsCreateView(CreateView):
+class ProductsAdminCreateView(CreateView):
     model = Products
     form_class = ProductCreateForm
     template_name = 'userAdmin/products-create.html'
