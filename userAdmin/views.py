@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
+from django.db.models import F
 
 from orders.models import Order
 from products.models import Products, ProductsCategory
@@ -16,6 +17,12 @@ from userAdmin.forms import AdminUserRegistrationForm, AdminUserUpdateForm, Prod
 @user_passes_test(lambda u: u.is_staff)
 def index(request):
     return render(request, 'userAdmin/index.html')
+
+
+def db_profile_by_type(prefix, type, queries):
+    update_queries = list(filter(lambda x: type in x['sql'], queries))
+    print(f'db_profile {type} for {prefix}:')
+    [print(query['sql']) for query in update_queries]
 
 
 # Отображение и редактирование пользователей
