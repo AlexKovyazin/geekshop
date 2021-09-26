@@ -14,6 +14,7 @@
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
+                                <th>ID пользователя</th>
                                 <th>Имя пользователя</th>
                                 <th>Имя</th>
                                 <th>Фамилия</th>
@@ -24,6 +25,7 @@
                             </thead>
                             <tfoot>
                             <tr>
+                                <th>ID пользователя</th>
                                 <th>Имя пользователя</th>
                                 <th>Имя</th>
                                 <th>Фамилия</th>
@@ -35,7 +37,8 @@
                             <tbody>
                             {% for user in object_list %}
                                 <tr>
-                                    <td><a href="{% url 'userAdmin:update_user' user.id %}" style="color: dodgerblue">{{ user.username }}</a></td>
+                                    <td><a href="{% url 'userAdmin:update_user' user.id %}" style="color: dodgerblue">{{ user.id }}</a></td>
+                                    <td>{{ user.username }}</td>
                                     <td>{{ user.first_name }}</td>
                                     <td>{{ user.last_name }}</td>
                                     <td>{{ user.email }}</td>

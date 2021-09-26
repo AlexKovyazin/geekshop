@@ -35,7 +35,7 @@
                             <tbody>
                             {% for order in order_list %}
                                 <tr>
-                                    <td><a href="{#% url 'orders:update_order' order.id %#}"
+                                    <td><a href="{% url 'userAdmin:orders_update' order.id %}"
                                            style="color: dodgerblue">{{ order.id }}</a></td>
                                     <td>{{ order.user }}</td>
                                     <td>{{ order.created|date:"Y-m-d H:i:s" }}</td>
@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <a href="{#% url 'orders:CreateOrder' %#}">
+                    <a href="{% url 'userAdmin:orders_create' %}">
                         <button class="btn btn-success">Создать заказ</button>
                     </a>
                 </div>

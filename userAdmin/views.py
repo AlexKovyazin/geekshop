@@ -6,9 +6,11 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 
+from orders.models import Order
 from products.models import Products, ProductsCategory
 from users.models import User
-from userAdmin.forms import AdminUserRegistrationForm, AdminUserUpdateForm, ProductCreateForm, ProductUpdateForm
+from userAdmin.forms import AdminUserRegistrationForm, AdminUserUpdateForm, ProductCreateForm, ProductUpdateForm, \
+    CategoryCreateForm, CategoryUpdateForm, OrdersCreateForm, OrdersUpdateForm
 
 
 @user_passes_test(lambda u: u.is_staff)
@@ -93,7 +95,7 @@ class ProductsAdminCreateView(CreateView):
     model = Products
     form_class = ProductCreateForm
     template_name = 'userAdmin/products-create.html'
-    success_url = reverse_lazy('products:admin_products')
+    success_url = reverse_lazy('userAdmin:AdminOrdersList')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=None, **kwargs)
@@ -122,19 +124,133 @@ class ProductsAdminUpdateView(UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
 
+class ProductsAdminDeleteView(DeleteView):
+    model = Products
+    template_name = 'userAdmin/products-update-delete.html'
+    success_url = reverse_lazy('userAdmin:products_read')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_active = False
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
 # Отображение и редактирование категорий
 class CategoryAdminListView(ListView):
     model = ProductsCategory
     extra_context = {'title': 'Админ-панель - Категории'}
-    template_name = ''
+    template_name = 'userAdmin/category-list.html'
 
     def get_queryset(self):
         return ProductsCategory.objects.all()
 
 
 class CategoryAdminCreateView(CreateView):
-    pass
+    model = ProductsCategory
+    form_class = CategoryCreateForm
+    template_name = 'userAdmin/category-create.html'
+    success_url = reverse_lazy('userAdmin:category_read')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Создание товара'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class CategoryAdminUpdateView(UpdateView):
-    pass
+    model = ProductsCategory
+    form_class = CategoryUpdateForm
+    template_name = 'userAdmin/category-update-delete.html'
+    success_url = reverse_lazy('userAdmin:category_read')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Редактирование категории'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
+class CategoryAdminDeleteView(DeleteView):
+    model = ProductsCategory
+    template_name = 'userAdmin/category-update-delete.html'
+    success_url = reverse_lazy('userAdmin:category_read')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_active = False
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
+# Отображение и редактирование заказов
+class OrdersAdminListView(LoginRequiredMixin, ListView):
+    model = Order
+    extra_context = {'title': 'Админ-панель - Заказы'}
+    template_name = 'userAdmin/order-list.html'
+
+    def get_queryset(self):
+        return Order.objects.select_related()
+
+
+class OrdersAdminCreateView(CreateView):
+    model = Order
+    form_class = OrdersCreateForm
+    template_name = 'userAdmin/order-create.html'
+    success_url = reverse_lazy('userAdmin:orders_read')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Создание заказа'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
+class OrdersAdminUpdateView(UpdateView):
+    model = Order
+    form_class = OrdersUpdateForm
+    template_name = 'userAdmin/order-update-delete.html'
+    success_url = reverse_lazy('userAdmin:orders_read')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Редактирование заказа'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
+class OrdersAdminDeleteView(DeleteView):
+    model = Order
+    template_name = 'userAdmin/category-update-delete.html'
+    success_url = reverse_lazy('userAdmin:orders_read')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_active = False
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)

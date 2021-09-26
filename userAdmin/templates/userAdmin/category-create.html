@@ -3,30 +3,18 @@
 {% block content %}
     <main>
         <div class="container-fluid">
-            <h1 class="mt-4">Создание товара</h1>
-            <form action="{% url 'userAdmin:products_create' %}" method='post' enctype='multipart/form-data'>
+            <h1 class="mt-4">Создание категории</h1>
+            <form action="{% url 'userAdmin:category_create' %}" method='post' enctype='multipart/form-data'>
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="small mb-1" for="{{ form.name.id_for_label }}">Наименование</label>
                             {{ form.name }}
-                            <label class="small mb-1" for="{{ form.quantity.id_for_label }}">Количество</label>
-                            {{ form.quantity }}
-                            <label class="small mb-1" for="{{ form.category.id_for_label }}">Категория</label>
-                            {{ form.category }}
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="small mb-1">Изображение</label>
-                            <div class="custom-file">
-                                <label class="custom-file-label"
-                                       for="{{ form.image.id_for_label }}">{{ form.initial.image }}</label>
-                                {{ form.image }}
-                            </div>
-                            <label class="small mb-1" for="{{ form.price.id_for_label }}">Цена</label>
-                            {{ form.price }}
                             <label class="small mb-1" for="{{ form.is_active.id_for_label }}">Статус активности</label>
                             {{ form.is_active }}
                         </div>

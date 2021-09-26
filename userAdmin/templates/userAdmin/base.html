@@ -53,7 +53,7 @@
                         </div>
                         Пользователи
                     </a>
-                    <a class="nav-link" href="index.html">
+                    <a class="nav-link" href="{% url 'userAdmin:category_read' %}">
                         <div class="sb-nav-link-icon">
                             <i class="fas fa-shopping-basket"></i>
                         </div>
@@ -65,7 +65,7 @@
                         </div>
                         Продукты
                     </a>
-                    <a class="nav-link" href="{% url 'userAdmin:AdminOrdersList' %}">
+                    <a class="nav-link" href="{% url 'userAdmin:orders_read' %}">
                         <div class="sb-nav-link-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-truck" viewBox="0 0 16 16">

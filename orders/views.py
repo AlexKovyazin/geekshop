@@ -23,15 +23,6 @@ class OrdersList(LoginRequiredMixin, ListView):
         return Order.objects.select_related('user').filter(user=self.request.user)
 
 
-class AdminOrdersList(LoginRequiredMixin, ListView):
-    model = Order
-    extra_context = {'title': 'Админ-панель - Заказы'}
-    template_name = 'orders/admin-order-list.html'
-
-    def get_queryset(self):
-        return Order.objects.all()
-
-
 class OrderItemsCreate(LoginRequiredMixin, CreateView):
     model = Order
     fields = []
