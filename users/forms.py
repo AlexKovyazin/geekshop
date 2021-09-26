@@ -12,7 +12,7 @@ class UserLoginForm(AuthenticationForm):
         'class': 'form-control py-4',
         'placeholder': 'Введите имя пользователя'
     }))
-    password = forms.CharField(widget=forms.TextInput(attrs={
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
         'class': 'form-control py-4',
         'placeholder': 'Введите пароль'
     }))
