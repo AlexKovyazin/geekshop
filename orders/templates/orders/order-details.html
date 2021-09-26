@@ -2,28 +2,33 @@
 {% load static %}
 
 {% block content %}
-   {% include 'orders/includes/inc-order-summary.html' %}
-   <div class="basket_list">
-       {% for item in object.order_items.select_related %}
-           <div class="basket_record">
-               <img src="{{ item.product.image }}"
-                    alt="#">
-               <span class="category_name">
-                   {{ item.product.category.name }}
-               </span>
-               <span class="product_name">{{ item.product.name }}</span>
-               <span class="product_price">
-                   {{ item.product.price }}&nbspруб
-               </span>
-               <span class="product_quantity">
-                   x {{ item.quantity }} шт.
-               </span>
-               <span class="product_cost">
-                    = {{ item.get_product_cost }}&nbspруб
-               </span>
-           </div>
-       {% endfor %}
-   </div>
-   {% include 'orders/includes/inc-order-actions.html' %}
-
+    <div class="container">
+        {% include 'orders/includes/inc-order-summary.html' %}
+        <div class="col-lg-9">
+            <div class="row">
+                {% for item in object.order_items.select_related %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100">
+                            <a href="#">
+                                <img class="card-img-top"
+                                     src="{{ item.product.image.url }}"
+                                     alt="">
+                            </a>
+                            <div class="card-body"
+                                 style="display: flex;flex-direction: column;justify-content: space-between;">
+                                <h4 class="card-title">
+                                    <a href="#">{{ item.product.name }}</a>
+                                </h4>
+                                <div class="my-card-style">
+                                    <h5>Цена {{ item.product.price }} руб.</h5>
+                                    <p class="card-text">Количество {{ item.quantity }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% include 'orders/includes/inc-order-actions.html' %}
+    </div>
 {% endblock %}
