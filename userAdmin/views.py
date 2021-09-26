@@ -181,6 +181,15 @@ class CategoryAdminUpdateView(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+    # При применении скидки в такой реализации, невозможно вернуть цену путём отмены скидки на категорию
+    # Скидку необходимо включать в таблицу категорий в БД
+    def form_valid(self, form):
+        if 'discount' in form.cleaned_data:
+            discount = form.cleaned_data['discount']
+            if discount:
+                self.object.products_set.update(price=F('price') * (1 - discount / 100))
+        return super().form_valid(form)
+
 
 class CategoryAdminDeleteView(DeleteView):
     model = ProductsCategory

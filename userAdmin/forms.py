@@ -83,7 +83,12 @@ class CategoryUpdateForm(CategoryCreateForm):
     """
     Название используется во views.py для понимания логики
     """
-    pass
+    discount = forms.IntegerField(
+        label='скидка',
+        required=False,
+        min_value=0,
+        max_value=90,
+        initial=0)
 
 
 # Формы заказов
@@ -112,4 +117,3 @@ class OrdersUpdateForm(OrdersCreateForm):
     """
     Название используется во views.py для понимания логики
     """
-    pass
