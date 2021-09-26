@@ -20,7 +20,7 @@ class OrdersList(LoginRequiredMixin, ListView):
     template_name = 'orders/user-order-list.html'
 
     def get_queryset(self):
-        return Order.objects.select_related('user').filter(user=self.request.user)
+        return Order.objects.select_related('user').filter(user=self.request.user, is_active=True)
 
 
 class OrderItemsCreate(LoginRequiredMixin, CreateView):
