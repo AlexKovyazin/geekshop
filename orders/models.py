@@ -92,7 +92,7 @@ class OrderItem(models.Model):
 
     @staticmethod
     def get_item(pk):
-        return OrderItem.objects.get(pk=pk).first
+        return OrderItem.objects.get(pk=pk)
 
     def __str__(self):
         return self.product.name
