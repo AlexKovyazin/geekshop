@@ -40,20 +40,20 @@ class ProductsListView(ListView):
                 key = f'products_{chosen_category_id}'
                 products = cache.get(key)
                 if products is None:
-                    products = Products.objects.filter(category_id=chosen_category_id, is_active=True)
+                    products = Products.objects.filter(category_id=chosen_category_id, is_active=True).order_by('id')
                     cache.set(key, products)
             else:
                 key = 'products'
                 products = cache.get(key)
                 if products is None:
-                    products = Products.objects.filter(is_active=True)
+                    products = Products.objects.filter(is_active=True).order_by('id')
                     cache.set(key, products)
 
         else:
             if not chosen_category_id:
-                products = Products.objects.filter(is_active=True)
+                products = Products.objects.filter(is_active=True).order_by('id')
             else:
-                products = Products.objects.filter(category_id=chosen_category_id, is_active=True)
+                products = Products.objects.filter(category_id=chosen_category_id, is_active=True).order_by('id')
 
         return products
 
