@@ -45,22 +45,26 @@ class TestUserManagement(TestCase):
         self.assertContains(response, 'Профиль', status_code=200)
         self.assertEqual(response.context['user'], self.user)
 
-    def test_basket_login_redirect(self):
-        # без логина должен переадресовать
-        response = self.client.get('/basket/add/1')
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/users/login/?next=/basket/add/1/')
-        self.assertEqual(response.status_code, 302)
-
-        # с логином все должно быть хорошо
-        self.client.login(username='BrotherOfPekMek', password='TestCase145')
-        self.assertFalse(response.context['user'].is_anonimous)
-
-        response = self.client.get('/basket/add/1')
+    def test_user_logout(self):
+        # главная до авторизации
+        response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(list(response.context['basket']), [])
-        self.assertEqual(response.request['PATH_INFO'], '/basket/add/1')
-        self.assertIn('Ваша корзина, Пользователь', response.content.decode())
+        self.assertTrue(response.context['user'].is_anonymous)
+
+        # логинимся
+        self.client.login(username='BrotherOfPekMek', password='TestCase145')
+        # главная после авторизации
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context['user'].is_anonymous)
+
+        # выходим из системы
+        self.client.logout()
+
+        # главная после выхода
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['user'].is_anonymous)
 
     def tearDown(self):
         call_command('sqlsequencereset', 'products', 'users', 'orders', 'basket')
