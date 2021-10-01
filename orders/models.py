@@ -54,7 +54,7 @@ class Order(models.Model):
         verbose_name_plural = 'заказы'
 
     def __str__(self):
-        return 'Текущий заказ: {}'.format(self.id)
+        return f'Текущий заказ: {self.id}'
 
     def delete(self):
         items = self.order_items.select_related('product')
