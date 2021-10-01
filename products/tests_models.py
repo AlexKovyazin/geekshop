@@ -38,9 +38,9 @@ class TestProductsModels(TestCase):
             category=category_2)
 
     def test_ProductsCategory_str(self):
-        self.assertIsInstance(str(ProductsCategory.objects.get(name='кеды adidas')), str)
-        self.assertEqual(str(ProductsCategory.objects.get(name='кеды adidas')),
-                         ProductsCategory.objects.get(name='кеды adidas').name)
+        self.assertIsInstance(str(ProductsCategory.objects.get(name='обувь')), str)
+        self.assertEqual(str(ProductsCategory.objects.get(name='обувь')),
+                         ProductsCategory.objects.get(name='обувь').name)
 
     def test_Products_str(self):
         self.assertIsInstance(str(Products.objects.get(name='кеды adidas')), str)
