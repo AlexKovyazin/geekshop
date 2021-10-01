@@ -7,7 +7,7 @@ from products.models import ProductsCategory, Products
 from users.models import User
 
 
-class TestOrdersModels(TestCase):
+class TestProductsModels(TestCase):
     def setUp(self):
         call_command('flush', '--noinput')
         call_command('loaddata', 'test_db.json')
