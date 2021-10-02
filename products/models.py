@@ -4,9 +4,14 @@ from django.db import models
 class ProductsCategory(models.Model):
     name = models.CharField(max_length=64, unique=True)
     description = models.TextField(blank=True, null=True)
+    is_active = models.BooleanField(blank=False, default=True)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Категории'
+        verbose_name_plural = 'Категории'
 
 
 class Products(models.Model):
@@ -16,6 +21,12 @@ class Products(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     quantity = models.PositiveIntegerField(default=0)
     category = models.ForeignKey(ProductsCategory, on_delete=models.CASCADE)
+    is_active = models.BooleanField(blank=False, default=True)
+
+    class Meta:
+        verbose_name = 'Продукт'
+        verbose_name_plural = 'Продукты'
+
 
     def __str__(self):
         return f'{self.name}'

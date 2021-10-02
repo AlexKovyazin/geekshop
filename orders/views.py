@@ -20,16 +20,7 @@ class OrdersList(LoginRequiredMixin, ListView):
     template_name = 'orders/user-order-list.html'
 
     def get_queryset(self):
-        return Order.objects.select_related('user').filter(user=self.request.user)
-
-
-class AdminOrdersList(LoginRequiredMixin, ListView):
-    model = Order
-    extra_context = {'title': 'Админ-панель - Заказы'}
-    template_name = 'orders/admin-order-list.html'
-
-    def get_queryset(self):
-        return Order.objects.select_related('user')
+        return Order.objects.select_related('user').filter(user=self.request.user, is_active=True)
 
 
 class OrderItemsCreate(LoginRequiredMixin, CreateView):
@@ -45,7 +36,7 @@ class OrderItemsCreate(LoginRequiredMixin, CreateView):
         if self.request.POST:
             formset = order_formset(self.request.POST)
         else:
-            basket_items = Basket.objects.select_related('user').filter(user=self.request.user)
+            basket_items = Basket.objects.filter(user=self.request.user).select_related()
             if len(basket_items):
                 order_formset = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=len(basket_items) + 1)
                 formset = order_formset()
@@ -176,7 +167,7 @@ def product_quantity_update_delete(sender, instance, **kwargs):
 
 def get_product_price(request, pk):
     if request.is_ajax():
-        product = Products.objects.filter(pk=int(pk)).first()
+        product = Products.objects.get(pk=int(pk))
         if product:
             return JsonResponse({'price': product.price})
         else:
